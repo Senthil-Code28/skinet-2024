@@ -13,7 +13,23 @@ public class BaseSpecfication<T>(Expression<Func<T, bool>>? criteria) : ISpecifi
 
     public Expression<Func<T, object>>? OderByDecending { get; private set; }
 
-    public bool IsDistinct {get; private set; } 
+    public bool IsDistinct { get; private set; }
+
+    public int Take { get; private set; }
+
+    public int Skip { get; private set; }
+
+    public bool IsPagineEnabled { get; private set; }
+
+    public IQueryable<T> ApplyCriteria(IQueryable<T> query)
+    {
+        if (Criteria != null)
+        {
+            query = query.Where(Criteria);
+        }
+
+        return query;
+    }
 
     protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
     {
@@ -26,6 +42,13 @@ public class BaseSpecfication<T>(Expression<Func<T, bool>>? criteria) : ISpecifi
     }
     protected void ApplyDistinct(){
         IsDistinct = true;
+    }
+
+    protected void ApplyPaging (int skip, int take)
+    {
+        Skip = skip;
+        Take = take;
+        IsPagineEnabled = true;
     }
 }
 
