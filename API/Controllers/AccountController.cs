@@ -31,9 +31,10 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
             {
                 ModelState.AddModelError(error.Code, error.Description);
             }
-        }
-        return ValidationProblem();
 
+            return ValidationProblem();
+        }
+            return Ok();
     }
 
     [Authorize]
@@ -61,7 +62,7 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
         });
     }
 
-    [HttpGet]
+    [HttpGet("auth-status")]
     public ActionResult GetAuthState()
     {
         return Ok(new {IsAuthenticated = User.Identity?.IsAuthenticated ?? false });
